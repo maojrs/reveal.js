@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - Math Plugin</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="../css/reveal.min.css">
+		<link rel="stylesheet" href="../css/theme/simple.css" id="theme">
+<!-- 		simple night beige default serif sky -->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+
+				<section>
+					<h2>Fluid interface problems applied to traumatic brain injury. </h2>
+					<p> <br> </p>
+					<p>Mauricio Del Razo and Randall J. LeVeque </p>
+				</section>
+
+				<section>
+				    <section>
+                      <h3 align="left">Traumatic brain injury (TBI)<br> <br/> </h3>
+                          <h4 align="left"> Interested in brain injury caused by shockwaves: <br></br> </h4>
+                          <ul>
+                            <li> Blast waves (civilians and soldiers). <br></br> </li>
+                            <li> Car/bike accidents. <br></br> </li>
+                            <li> Boxing. </li>
+                          </ul>
+  <!--					\[\begin{aligned}
+                      \dot{x} &amp; = \sigma(y-x) \\
+                      \dot{y} &amp; = \rho x - y - xz \\
+                      \dot{z} &amp; = -\beta z + xy
+                      \end{aligned} \]-->
+					</section>
+					<section>
+					    <h3 align="left"> Experimentalists at VA Hospital:  </h3>
+					    <h4 align="left"> What happens when the shockwave hits? <br></br> </h4>
+					    <ul>
+					        <li> Changes in blood-brain barrier diffusion. <br></br> </li>
+                            <li> Damage to astrocytes cells. <br></br></li>
+					        <li> Brain cells damage. <br></br> </li>
+					        <li> Combination of these. <br></br> </li>
+					    </ul>
+					    <ol class="fragment">
+					    <p> We are trying to find out...</p>
+					    <h4 align="left">  Experiments done with endothelial cells, 
+					    since the blood-brain barrier is composed by them. </h4>
+					    </ol>
+					</section>
+					<section>
+					    <h3 align="left"> Experimental setup: </h3>
+					    <h4 align="left"> <br> </br> They have a shock-tube! </h4>
+					    <img  src="figs/TBIshocktube.png" alt="Shocktube" width="600">
+					    <h4 align="left"> We can measure shock profile in air, but how does it look before hitting the cells? </h4>
+					</section>
+				</section>
+
+				<section>
+				    <section>
+                      <h3 align="left"> The mathematical model <br> </br> </h3>
+                      <h4 align="left"> 3D Axisymmetric Compressible euler equations</h4>
+                      \[ \begin{aligned}
+                          \frac{\partial}{\partial t}
+                            \left[\begin{array}{c} \rho \\   \rho u_r \\    \rho u_z \\    E   \end{array} \right] 
+                        + \frac{\partial}{\partial r} 
+                            \left[\begin{array}{c} \rho u_r \\   \rho u_r^2 + P \\    \rho u_r u_z \\     u_r(E+p)   \end{array} \right]
+                        + \frac{\partial}{\partial z}
+                            \left[\begin{array}{c} \rho u_z \\   \rho u_r u_z \\    \rho u_z^2 + p \\     u_z(E+p)   \end{array} \right] 
+                        =   \left[\begin{array}{c} -(\rho u_r)/r \\   -(\rho u_r^2)/r  \\    -(\rho u_r u_z)/r \\     -u_r(E+p)/r   \end{array} \right] 
+                        \end{aligned}
+                      \]
+                      <ul>
+                      <br>
+                          <li> Good to model acoustic pressure propagation. </li>
+                          <li> Nonlinearity allows shock formation. </li>
+                          <li> Energy equation connects w/temperature (relevant for cell damage). </li>
+                      </ul>
+                    </section>
+                    <section>
+                        <h3 align="left"> The mathematical model <br> </br> </h3>
+                        <h4 align="left"> How to model Interfaces? <br> </br></h4>
+                        <p> Stiffened gas equation of state (SGEOS): <br> </p>
+                        \[
+                          p = \underbrace{(\gamma - 1)}_{\text{Ideal gas}} \rho e -\underbrace{\gamma P_{\infty}}_{\text{Stiffening term}}
+                          \]
+                       <br>
+                       <p>Different materials = different parameters for SGEOS</p>
+                    
+                    </section>
+                    <section>
+                        <h3 align="left"> The mathematical model <br> </br> </h3>
+                        <h4 align="left"> Numerical methods: <br> </br> </h4>
+                        <ul>
+                            <li> High resolution finite volume methods. <br> </br> </li>
+                            <li> HLLC approximate Riemann solver. <br> </br> </li>
+                            <li> Dimensional splitting. <br> </br> </li>
+                            <li> Fractional step method for source terms. <br> </br> </li>
+                            <li> Implemented into Clawpack. </li>
+                        </ul>
+                    </section>
+				</section>
+
+				<section>
+                    <section>
+                      <h3 align="left"> Some computational results </h3>
+                      <h4 align="left"> 1D Air-Plastic-Water interface </h4>
+                      <iframe id="slideshare" src="figs/PressureAnimation.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                      <script>
+                          document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                      </script>
+                    </section>
+                    <section>
+                        <h3 align="left"> Some computational results <br> </br> </h3>
+                        <h4 align="left"> From 1D simulations... </h4>
+                        <ul>
+                            <li> Pressure amplitude increases when crossing interface. <br> </br> </li>
+                            <li> As Plastic interface gets thinner, it becomes negligible. <br> </br> </li>
+                            <li> Plastic-water could play role of skull-brain. <br> </br> </li>
+                        </ul>
+                    </section>
+				    <section>
+				      <h3 align="left"> Some computational results </h3>
+                      <h4 align="left"> 3D Axisymmetric Air-Water interface </h4>
+                      <iframe id="slideshare" src="figs/3DASym_test3.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                      <script>
+                          document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                      </script>
+                    </section>
+                    <section>
+                        <h3 align="left"> Some computational results </h3>
+                        <h4 align="left"> What we learned... <br></br> </h4>
+                        <ul>
+                            <li> We can compute pressure profile in water before hitting the cells. <br></br> </li>
+                            <li> Physical insight of the effects of the interface: reflection, elongation, amplification, etc... <br></br></li>
+                            <li> If pressure becomes higher inside brain, damage could be underestimated. <br></br> </li>
+                            <li> Geometry might become very relevant when dealing with a skull. </li>
+                        </ul>
+                    </section>
+				</section>
+				<section>
+				    <h3 align="left"> Future work <br> </br> </h3>
+				    <ul>
+				        <li> Comparison with experiments. <br></br> </li>
+				        <li> Incorporate transverse solvers. <br></br> </li>
+				        <li> Implement arbitrary interfaces (like a skull). <br></br> </li>
+				        <li> Add moving or vibrating interfaces. <br></br> </li>
+				        <li> Make connection to biological effects (not easy). </li>
+				        
+				    </ul>
+				</section>
+
+
+			</div>
+
+		</div>
+
+		<script src="../lib/js/head.min.js"></script>
+		<script src="../js/reveal.min.js"></script>
+
+		<script>
+
+			Reveal.initialize({
+				history: true,
+				transition: 'linear',
+
+				math: {
+					// mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+					config: 'TeX-AMS_HTML-full'
+				},
+
+				dependencies: [
+					{ src: '../lib/js/classList.js' },
+					{ src: '../plugin/math/math.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
