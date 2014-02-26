@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - Math Plugin</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="../css/reveal.min.css">
+		<link rel="stylesheet" href="../css/theme/simple.css" id="theme">
+<!-- 		simple night beige default serif sky -->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                <!--TITLE -->
+				<section>
+					<h3> Stochastic reaction diffusion and fluid interface problems with applications to biology. <br> <br/> </h3>
+					<p> 
+					 Mauricio Del Razo Sarmina  <br> <br/>  
+					<small> <b>Advisors:</b> <br> 
+					Randall J. LeVeque <br> & <br> Hong Qian <br> <br/> </small>
+					</p>
+					<p align='center'>
+					<small>
+					<b> University of Washington </b> <br> Department of Applied Mathematics
+					</small>
+					</p>
+					<ahref="">
+					<embed width="150" src="figsPG/UWSeal.png"></a>
+				</section>
+				
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+				<!--INTRODUCTION -->
+                <section>
+                    <h2 align="left"> Outline  </h2>
+                    <hr align="left" width="900" size="5" noshade="noshade">
+                    <h5 align="left"> Two very relevant areas in biological modeling <br> </h5> <!-- dffdf-->
+                    
+<!--                     LEFT COLUMN -->
+                    <div style="float:left;width:46%;font-size:30px;">
+                       <div class="fragment grow" data-fragment-index="1">
+                            <div class="fragment shrink" data-fragment-index="2">
+                            <u> <b> Stochastic reaction diffusion </b> </u> <br>
+                            </div>
+                       </div>
+                       <div class="fragment" data-fragment-index="1" align='center'>
+                        <div class="fragment shrink" data-fragment-index="2">
+                          <em> -Model stochastic reaction diffusion at mesoscopic scales </em><br>
+                          <ul>
+                            <li>Motivation</li>
+                            <li> Deterministic or stochastic?</li>
+                            <li>Exisiting models (w/diffusion)</li>
+                            <li>Coupled diffusion model</li>
+                            <li>Application in fluorescence correlation spectroscopy</li>
+                          </ul>
+                        </div>
+                       </div>
+                    </div>
+                          
+<!--                       Right Column     -->
+                      <div style="float:right;width:50%;font-size:30px;">
+                        <div class="fragment grow" data-fragment-index="2">
+                          <u> <b> Fluid interface problems </b> </u> <br> 
+                        </div>  
+                      
+                        <div class="fragment" data-fragment-index="2">
+                            <em> -Model interface/shock wave interaction for traumatic brain injury (TBI) </em><br>
+                            <ul>
+                              <li>Motivation</li>
+                              <li>Experimental setup </li>
+                              <li>Numerical setup </li>
+                              <li>Numerical Methods </li>
+                              <li>Some results </li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                    
+                </section>
+                
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                <!--Stochastic reaction diffusion-->
+<!--                     Motivation -->
+				    <section>
+				        <h6 align="left"> Stochastic reaction diffusion</h6>
+				        <hr align="left" width="900" size="5" noshade="noshade">
+				        <h2 align='left'> Motivation </h2>
+				        <hr align="left" width="900" size="5" noshade="noshade">
+				        <p align='left'> Understanding biochemical processes in the cell! <br></p>
+				        <ul style="font-size:30px">
+                            <li> Cell biochemistry &#8594 <b>Diffusion is relevant</b>. <br></br> </li>
+                            <li> Aqueous medium &#8594 <b> Stochastic diffusion </b>. <br></br></li>
+				            <li> Mesoscopic scale &#8594  <b> Stochastic reaction </b>. <br></br></li>
+				            <li> Cell are open systems &#8594 <b> Non-equilibrium dynamics </b>. <br></br> </li>
+				        </ul>
+	                    <p style="font-size:27px" align='left'> - Cell are too complicated; however, simple models might 
+	                    display similar qualitative behavior. <br></br>
+	                    - Current SRD models are not very rigorous. 
+				    </section>
+                  
+<!--                   Deterministic vs Stochastic -->
+                  <section>
+                    <section>
+                        <h6 align="left"> Stochastic reaction diffusion: deterministic or stochastic? </h6>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h3 align='left'> Deterministic vs. Stochastic reactions </h3>
+                        <hr align="left" width="900" size="5" noshade="noshade"> 
+                        <p style="font-size:25px" align='left'>
+                        <u> Consider: </u> <span style="padding: 0 40px">&nbsp;</span> 
+                          $ A + B \overset{k_f}{\underset{k_b}\rightleftharpoons} C $
+                          <span style="padding: 0 30px">&nbsp;</span>
+                          with [A] & [B] constant. <br> </p>
+                          
+                        <!--                       Left column -->
+                        <div style="float:left;width:48%;">
+                        <p style="font-size:25px" align='left'>
+                          <ul style="font-size:23px"> 
+                            <li> Deterministic &#8594 <b> Law of Mass Action (LMA) </b> &nbsp &nbsp &nbsp
+                                $ \frac{d[C]}{dt} = k_f[A][B] - k_b[C] $ <br>
+                                - One ODE for the concentration. <br> 
+                            </li>
+                            <li> Stochastic &#8594 <b> Chemical Master Eq. (CME) </b> 
+                                $  \frac{dP_n(t)}{dt} = -(\lambda_n + \mu_n)P_n(t) +   \\                                             
+                        \mu_{n+1}P_{n+1}(t) + \lambda_{n-1}P_{n-1}(t) $ <br>
+                                - Infinite ODE system for the probability distribution of the num. of molecules. <br>
+                                - Accounts for the discrete probabilistic nature of chemical reactions. <br>
+                            </li>
+                          </ul>
+                        </div>
+
+  <!--                       Right column -->
+                        <div style="float:right;width:48%;">
+                         <ul style="font-size:23px"> 
+                            <li> Stochastic &#8594 <b> Fokker Planck Equation (FPE) </b> <br>
+                             $\frac{\partial f(z,t)}{\partial t} = 
+                               \frac{\partial}{\partial z}\Bigg[ \frac{z}{\tau}f(z,t)
+                                +\frac{k_bz^*}{V} \frac{\partial f(z,t)}{\partial z} \Bigg] $ <br>
+                             - One PDE for the probability distribution of the concentration. <br>
+                             - Continous approximation to the CME.    
+                            </li>
+                            <li> Stochastic sampling &#8594 <b> Gillespie Algorithm</b> <br>
+                                - Monte Carlo algorithm: solves for trajectories of the PDF<br>
+                                - When will next reaction occur? <br>
+                                - What is the next reaction? <br>
+                            </li>
+                         </ul>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </section>
+                    
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: deterministic or stochastic? </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Deterministic vs. Stochastic reactions. </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <p> Relation diagram between the LMA, CME and FPE: </p>
+                        <img src="figsPG/CMELMAFPE.png" alt="CME Diagram">
+                      <p> The CME is more fundamental. </p>
+                    </section>
+                    
+                  <!--  <section>
+                      <h6 align="left"> Stochastic reaction diffusion: deterministic or stochastic? </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> The Schlögl Model. </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <p></p>
+                    </section>-->
+                      
+				</section>
+ 
+<!--                 Existing Models -->
+                <section>
+<!--                     Smoluchoskis model -->
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: existing models w/diffusion </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Diffusion Limited Reactions. </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+<!--                       Left column -->
+                      <div style="float:left;width:60%;">
+                         Reactions controlled by diffusion
+                         <div class="fragment" data-fragment-index="1">
+                          <u> <b> Smoluchowski's model </u> </b>
+                          <p style="font-size:25px"> 
+                              $A + B \overset{k_S}\rightarrow C$ <br>
+                              <ul style="font-size:25px">
+                                  <li> Spherical A fixed at center </li>
+                                  <li> Initial uniformly distributed B's around A. </li>
+                                  <li> B's undergo Brownian Motion &#8594 Diffusion eq.  </li>
+                                  <li> B crashes with A &#8594 Diff. limited reaction </li>
+                                  <li> PDF of B concentration described by the PDE:</li>
+                              </ul>
+                          </p>
+                        </div>
+                          <div class="fragment" data-fragment-index="1">
+                            <p style="font-size:25px">
+                            $$  \frac{\partial u(r,t)}{\partial t} = \frac{D}{r^2}\frac{\partial}{\partial r}
+                            \left(r^2 \frac{\partial }{\partial r} u(r,t)\right) \\
+                             u(R,t) = 0 \hspace{5mm} u(R_\infty,t) = c_0 $$
+                            </p>
+                            <div class="fragment grow" data-fragment-index="2" style="font-size:25px"> 
+                               $k_S = 4\pi R D $
+                            </div>
+                          </div>
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:35%;">
+                        <div class="fragment grow" data-fragment-index="1">
+                          <div class="fragment shrink" data-fragment-index="2">
+                            <img src="figsPG/difflimcartoon.png" width="270" >
+                          </div>  
+                        </div>
+                        <div class="fragment" data-fragment-index="2">
+                          <div class="fragment grow" data-fragment-index="2">
+                            <img src="figsPG/difflimitedred.gif" width="270" >
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                    </section>
+                    
+<!--                     Collins and kimball and Kramers models -->
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: existing models w/diffusion </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Diffusion Limited Reactions </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                    <!--                       Left column -->
+                      <div style="float:left;width:60%;">
+                        <u> <b> Collins and Kimball's model </u> </b> <br> 
+                        <p style="font-size:30px"> 
+                          Partially diffusion controlled BC: <br> 
+                          Flux $\propto$ Concetration <br> </br>
+                          $$ 4\pi R^2 D u'(R) = \kappa u(r) \\
+                          k_{CK} = \frac{k_S \kappa}{k_S + \kappa} $$
+                        </p> 
+                        <u> <b> Kramer's model </u> </b> <br> 
+                        <p style="font-size:30px"> 
+                          PDF of particles under a potential $U(r)$ follows <br> <br>
+                          $$ \frac{\partial u(r,t)}{\partial t} = 
+                          \frac{D}{r^2}\frac{\partial}{\partial r}
+                          \left(r^2 e^{-\beta U(r)}\frac{\partial [e^{\beta U(r)}u(r,t)]}{\partial r}\right)$$
+                        </p>
+                        
+      
+                        
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:38%;" class="fragment grow" data-fragment-index="2">
+                            <img src="figsPG/partialdifflimited.gif" width="350" >
+                            <p style="font-size:25px" align='right' > 
+                            Smoluchowski &#8594 Blue <br> 
+                            Collins & Kimball &#8594 Red
+                            </p>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                    </section>
+                    
+<!--                     First passage time equivalent problem -->
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: existing models w/diffusion </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> First Passage Time (FPT) </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <p style="font-size:30px" align='left'> 
+                        - Given uniformly distributed B's around A: <br>
+                        - What is the expected time for first encounter with A: &nbsp $t_1$
+                      </p>
+                      
+                      <!--                       Left column -->
+                      <div style="float:left;width:46%;">
+                      <img src="figsPG/FPTanim.gif" width="350" >
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:46%;">
+                        <p style="font-size:27px" align='left'>
+                        - Can also ask time for second encounter starting on A boundary: &nbsp $t_2$ <br> </br>
+                        <b> <u> Reaction rates related to FPT: </u> </b> <br> </br>
+                        $$ t_1=\frac{1}{k_S c_0} \hspace{10mm} t_2=\frac{1}{k_s c_0} + \frac{1}{\kappa c_0} \\
+                          k_{CK} = \frac{1}{t_2 c_0} = \frac{k_S \kappa}{k_S + \kappa}$$
+                        </p>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                        
+                    </section>
+                    
+<!--                     IRREVERSIBLE REACTIONS -->
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: existing models w/diffusion </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Irreversible reactions </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <p style="font-size:30px" align='left'> 
+                      Consider: <span style="padding: 0 100px">&nbsp;</span> 
+                       $ A + B \overset{k_f}{\underset{k_b}\rightleftharpoons} C $ <br> </br>
+                      - How to write an equation for the PDF? <br> </br>
+                      - In a simulation context: <br>
+                      <ul>
+                        <li> Where to put B after backward reaction? </li> <br>
+                        <li> Too close will immediately react! </li> <br>
+                      </ul>
+                      </p>
+                      <div class="fragment grow" data-fragment-index="1">
+                       <div class="fragment" data-fragment-index="1"> 
+                        <b> Geminate recombinations! </b>
+                       </div>
+                      </div>
+                    </section>
+                    
+<!--                     Kinetic Monte Carlo methods -->
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: existing models w/diffusion </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Kinetic Monte Carlo Methods (KMC) </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <p style="font-size:30px" align='left'> 
+                        - Simulate trajectories within the PDF (similar to Gillespie algorithm). <br>
+                      </p>
+                      <!--                       Left column -->
+                       <div style="float:left;width:48%;">
+                      <p style="font-size:25px" align='left'>
+                        For &nbsp &nbsp &nbsp &nbsp $ A + B \overset{k_f}{\underset{k_b}\rightleftharpoons} C $ <br>
+                      </p>
+                      <ul style="font-size:25px" align='left'>
+                        <li> Model Brownian motion with Random Walks for A,B & C in a box. </li>
+                        <li> Diffusion limited forward reaction </li>
+                        <li> Introduce an unbinding radius: place B a distance $U_r$ after backward reaction. </li>
+                        <li> Use Smoluchowski's model for each A molecule, where $U_r=\frac{1}{2}(\frac{V_{box}}{nA})^{1/3}$ </li>
+                        <li> <b> Note: </b> $U_r$ will depend on A concentration $\Rightarrow$ Several iterations to find $U_r$ </li>
+                      </ul>
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:48%;">
+                        <img src="figsPG/SimulationVis.gif" width="450" >
+                        <p style="font-size:23px" align='center' class="fragment grow" data-fragment-index="2">
+                        - Only simulates trajectories. <br>
+                        - Not accurate close to A molecules. <br>
+                        - Lacking rigorous mathematical/physical foundation.
+                        </p>
+                      </div>
+                     
+                      <div style="clear: both;"></div>
+                    </section>
+
+                </section>
+              
+<!--                 COUPLED DIFFUSION MODELS -->
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: coupled diffusion process </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Coupled diffusion model (first step) </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <ul style="font-size:25px">
+                        <li> Rigorous mathematical foundation: stochastic process corresponds to PDE. </li>
+                        <li> Only one A fixed at the center, but incorporates irreversible reactions. </li>
+                        <li> $f_u, f_b:$ probability distribution of unbinded or binded B. </li>
+                        <li> Generalizes easily to many B's </li> <br>
+                      </ul>
+                      <p style="font-size:25px" align='left'> 
+                      $$ \frac{\partial f_u(r,t)}{\partial t} = \frac{D_u}{r^2} \frac{\partial }{\partial r} \left( r^2 e^{-\beta U_u(r)} 
+                         \frac{\partial}{\partial r} e^{\beta U_u(r)} f_A(r,t)\right) -\alpha(r)f_u(r,t) + \lambda(r)f_b(t)  \\
+                         \frac{\partial f_b(r,t)}{\partial t} = \frac{D_b}{r^2} \frac{\partial }{\partial r} \left( r^2 e^{-\beta U_b(r)} 
+                         \frac{\partial}{\partial r} e^{\beta U_b(r)} f_A(r,t)\right) + \alpha(r)f_u(r,t) - \lambda(r)f_b(t)  $$ <br>
+                       
+                      - Using $\alpha(r)=\frac{k_0 \delta(r-R)}{4\pi r^2}$, $U_u=0$ and $\lambda(r)=0$  
+                        $\Rightarrow$ recovers Collins & Kimball <br></br>
+                      - Additionally using $\lambda(r)=\frac{k_1\delta(r-U_r)}{4\pi r^2}$ $\Rightarrow$ consistency with KMC model.
+                      </p>
+                </section>
+                
+<!--                 Applications to FCS -->                 
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: applications </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align='left'> Fluorescence correlation spectroscopy (FCS) </h4>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+<!--                       Left column -->
+                      <div style="float:left;width:46%;">
+                      <p style="font-size:23px" align="justify">
+                        - FCS: experimental technique to measure <b>diffusion coefficients</b> and <b>reaction rates</b>. <br></br>
+                        - It is based on correlations of <b>linear</b> fluctuation around equilibrium.
+                      </p>
+                      <img src="figsPG/FCSdiag.jpg" width="300" >
+                      <p style="font-size:25px" align="justify">
+                        - Fluctuations contain information of diffusion and reaction
+                      </p>
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:46%;">
+                        <img src="figsPG/FCS-correlationcurves.png" width="350" >
+                        <p style="font-size:23px" align="left"> 
+                          - Correlation curves match for linear reactions. <br></br>
+                          - Slightly deviate for nonlinear reactions <br></br>
+                          - They match in asymptotic cases: <br> nonlinear $\rightarrow$ linear 
+                        </p>
+                        
+                      </div>
+
+                      <div style="clear: both;"></div>
+<!--                 Future work       -->
+                </section>
+                      
+                    
+                
+              <!--  <section>
+                      <h6 align="left"> Stochastic reaction diffusion: future direction </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align='left'> Future Directions </h4>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <ul>
+                        <li> FCS application paper <em> almost </em> submitted <br></br> </li>
+                        <li> TBI paper in collaboration with VA Hospital scientists almost done </li>
+                        <li> Unifying applications for both areas? </li>
+                      </ul>
+                </section>-->
+                
+                <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                <!--Fluid Interface Problems-->
+<!--                     Motivation -->
+                    <section>
+                        <h6 align="left"> Fluid shock wave/interface problems</h6>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h2 align='left'> Motivation </h2>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h4 align="left"> Interested in traumatuc brain injury (TBI) caused by shockwaves: <br></br> </h4>
+                          <ul>
+                            <li> Blast waves (civilians and soldiers) <br> </li>
+                            <li> Car/bike accidents <br> </li>
+                            <li> Boxing </li> <br> 
+                          </ul>
+                        <p style="font-size:30px" align='left'>  
+                          - Shock waves travel from air to your skull and brain (interfaces). <br>
+                          - Experimentalists have interfaces in their experimental setups. <br> 
+                          - Cells might behave as interfaces too. <br> </br>
+                          
+                          Not limited to TBI, original motivation began with localized drug delivery.
+                        </p>
+                    </section>
+<!--                 Experimental setup     -->
+				<section>
+<!-- 				    Experimentalists hypothesis -->
+					<section>
+                        <h6 align="left"> Fluid shock wave/interface problems: experimental setup</h6>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h3 align='left'> Experimentalists at VA Hospital: </h3>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+					    <h5 align="left"> What happens when the shockwave hits? <br></br> </h5>
+					    <ul>
+					        <li> Changes in blood-brain barrier diffusion. <br> </li>
+                            <li> Damage to astrocytes cells. <br></li>
+					        <li> Brain cells damage. <br> </li>
+					        <li> Combination of these. <br></br> </li>
+					    </ul>
+					    <ol class="fragment">
+					    <p> We are trying to find out...</p>
+					    <p align="left" style="font-size:30px">  Experimental setup done with endothelial cells, 
+					    since the blood-brain barrier is composed by them. </p>
+					    </ol>
+					</section>
+					
+<!-- 					Experimental setup -->
+					<section>
+					    <h6 align="left"> Fluid shock wave/interface problems: experimental setup</h6>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h3 align='left'> Experimental setup: </h3>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h6 align="left"> They have a shock-tube! </h6>
+                        <div class="fragment grow" data-fragment-index="1">
+                            <div class="fragment shrink" data-fragment-index="2">
+                              <img  src="figsPG/TBIshocktube.png" alt="Shocktube" width="500">
+                            </div>
+                        </div>
+                        <p style="font-size:30px"> Cartoon of cylindrical cross-section of shock tube.</p>
+                        <h4 align="left"> We can measure shock profile in air, but how does it look before hitting the cells? </h4>
+                        
+					</section>
+				</section>
+
+<!--                 Numerical setup -->
+				<section>
+				    <section>
+				      <h6 align="left"> Fluid shock wave/interface problems: numerical setup</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> The Model </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align="left"> 3D Axisymmetric Compressible euler equations</h4>
+                      <p style="font-size:30px">
+                      \[ \begin{aligned}
+                          \frac{\partial}{\partial t}
+                            \left[\begin{array}{c} \rho \\   \rho u_r \\    \rho u_z \\    E   \end{array} \right] 
+                        + \frac{\partial}{\partial r} 
+                            \left[\begin{array}{c} \rho u_r \\   \rho u_r^2 + P \\    \rho u_r u_z \\     u_r(E+p)   \end{array} \right]
+                        + \frac{\partial}{\partial z}
+                            \left[\begin{array}{c} \rho u_z \\   \rho u_r u_z \\    \rho u_z^2 + p \\     u_z(E+p)   \end{array} \right] 
+                        =   \left[\begin{array}{c} -(\rho u_r)/r \\   -(\rho u_r^2)/r  \\    -(\rho u_r u_z)/r \\     -u_r(E+p)/r   \end{array} \right] 
+                        \end{aligned}
+                      \]
+                      </p>
+                      <ul>
+                      <br>
+                          <li> Good to model acoustic pressure propagation. </li>
+                          <li> Nonlinearity allows shock formation. </li>
+                          <li> Energy equation provides connection with temperature (relevant for cell damage). </li>
+                      </ul>
+                    </section>
+                    
+<!--                     Where are the interfaces -->
+                    <section>
+                        <h6 align="left"> Fluid shock wave/interface problems: numerical setup</h6>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h3 align='left'> Where are the Interfaces? </h3>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <p align="left" style="font-size:30px"> The Equation of State (EOS) relates pressure 
+                        with density and internal energy to close the system of eqs. <br> </br></p>
+                        <p style="font-size:30px"> Stiffened gas equation of state (SGEOS) or Tamman EOS: <br> </p>
+                        \[
+                          p = \underbrace{(\gamma - 1) \rho e }_{\text{Ideal gas}} -\underbrace{\gamma P_{\infty}}_{\text{Stiffening term}}
+                          \]
+                       <p style="font-size:30px" > Different materials = different parameters for SGEOS</p>
+                       <div align='center'>
+                        <table border="1" style="font-size:25px;border:solid 3px #000;">
+                          <tr>
+                          <td style="border:3px solid #000;"> Parameter </td>
+                          <td style="border:3px solid #000;"> $\gamma$ &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </td>
+                          <td style="border:3px solid #000;"> $P_\infty$ </td>
+                          </tr>
+                          <tr>
+                          <td style="border:3px solid #000;"> Air </td>
+                          <td style="border:3px solid #000;"> 1.4 </td>
+                          <td style="border:3px solid #000;"> 0.0 </td>
+                          </tr>
+                          <tr>
+                          <td style="border:3px solid #000;"> Water</td>
+                          <td style="border:3px solid #000;"> 7.15 </td>
+                          <td style="border:3px solid #000;"> $3\times 10^8$ </td>
+                          </tr>
+                        </table>
+                        <p style="font-size:25px" > Problem can be stiff at interfaces! <br>
+                        $\Rightarrow$ Interfaces not trivial to implement. </p>
+                       <div>
+                    </section>
+                    
+<!--                     Numerical setup -->
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: numerical setup</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> The Numerical Setup </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                      <img  src="figsPG/2Drevolve.png" alt="Shocktube" width="500">
+                      <ul style="font-size:25px">
+                        <li> Revolved 2D model w/source terms = 3D Axisymmetric model. </li>
+                        <li> Air modeled in Eulerian coordinates. </li>
+                        <li> Water modeled in Lagrangian coordinates (moving w/fluid). </li>
+                        <li> Displacement of material in water small &#8594 Fixed grid</li>
+                      </ul>
+
+                    </section>
+				</section>
+				
+<!-- 				Numerical methods -->
+				<section>
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: numerical methods</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                        <p style="font-size:32px">
+                            <b> System of 2D hyperbolic conservation laws with source terms. </b>
+                        </p>
+                        
+                        <!--                       Left column -->
+                          <div style="float:left;width:46%;">
+                            <ul style="font-size:25px">
+                              <li> High resolution finite volume methods. </li>
+                                  - Godunov method (+ limiters) <br>
+                                  <p style="font-size:20px" class="fragment highlight-red" data-fragment-index="1">
+                                  $$ Q_{i}^{n+1} = Q_i^n - \frac{\Delta t}{\Delta x} \times\\
+                                  \left[\sum_{p=1}^m(\lambda^p)^+ W_{i-1/2}^p +  
+                                        \sum_{p=1}^m(\lambda^p)^- W_{i+1/2}^p\right] $$ </p>
+                              <li class="fragment highlight-red" data-fragment-index="1"> Riemann solvers </li>
+                                  - HLLC approximate solver <br>
+                                  - Exact Riemann solver for Tamman EOS <br> 
+                              <li> Dimensional splitting <br> </li>
+                              <li> Fractional step method for source terms with TR-BDF2 <br> </li>
+                            </ul>
+                          </div>
+
+    <!--                       Right column -->
+                          <div style="float:right;width:46%;" class='fragment grow' data-fragment-index="1">
+                           <img  src="figsPG/RiemannP.png" alt="RiemannP" width="500"> <br></br>
+                          </div>
+                          <p style="font-size:30px" align="right"> <b><u>Implemented into Clawpack 5.0 </u></b> </p>
+
+                          <div style="clear: both;"></div>
+                    </section>
+                
+				</section>
+                
+<!--                 Results -->
+				<section>
+<!-- 				    1D Results -->
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: some results</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> 1D Air-Plastic-Water Interface </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+<!--                       Left column -->
+                      <div style="float:left;width:38%;">
+                        <br></br>
+                        <ul style="font-size:25px">
+                            <li> Pressure amplitude increases when crossing interface. <br> </br> </li>
+                            <li> As Plastic interface gets thinner, it becomes negligible. <br> </br> </li>
+                            <li> Plastic-water could play role of skull-brain. <br> </br> </li>
+                        </ul>
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:60%;">
+                        <iframe id="slideshare" src="figs/PressureAnimation.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                        <script>
+                            document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                        </script>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                    </section>
+                    
+<!--                     Pressure contour results -->
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: some results</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align='left'> 3D Axisymmetric Air-Water Interface Pressure Contours </h4>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <iframe id="slideshare" src="figsPG/3DAsymtranswell_pressurecontour.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                      <script>
+                          document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                      </script>
+                    </section>
+                    
+<!--                     1D vs 3D comparison -->
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: some results</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align='left'> 1D vs 3D Comparison </h4>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                    <!--                       Left column -->
+                      <div style="float:left;width:38%;">
+                      <p style="font-size:30px">One dimensional simulation: <br></br>
+                      </p>
+                      <img  src="figsPG/1Dpressure.gif" alt="Shocktube" width="500">
+                      <br></br>
+                      <p style="font-size:25px"> 
+                      3D Simulation $\Rightarrow$ <br>
+                      Vapour pressure at room Temperature: <br>2 493 Pa 
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:60%;">
+                      <iframe id="slideshare" src="figsPG/3DAsymtranswellpressureslice.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                      <script>
+                          document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                      </script>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                      
+                    </section>
+                    
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: some results</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> 3D Axisymmetric Air-Water Interface </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                      <!--                       Left column -->
+                      <div style="float:left;width:60%;">
+                        <iframe id="slideshare" src="figsPG/3DAsymtranswell.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                        <script>
+                          document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                        </script>
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:38%;">
+                        <p style="font-size:30px">
+                            <b> Major insights: </b> <br></br>
+                        </p>
+                        <ul style="font-size:30px">
+                            <li> Thin plastic negligible (1D) </li> <br>
+                            <li> Pressure increases when crossing interface </li> <br>
+                            <li> Geometry and reflections are very relevant </li> <br>
+                            <li> Cavitation possible as new mechanism of injury </li> <br>
+                        <ul>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                    </section>
+
+<!--                 Final comments -->
+				</section>
+				<section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Future Directions & Final Comments </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <div style="float:left;width:48%;">
+                        <p style="font-size:30px">
+                             <b> <u> Stochastic reaction diffusion </u> </b>
+                        </p>
+                        <ul style="font-size:25px">
+                          <li> Study bistability with CD model </li>
+                          <li> Generalization of CD to many A's </li>
+                          <li> Design algorithm to solve for the PDF in CD </li> <br>
+                        </ul>
+                        <p style="font-size:30px">
+                          <b> <u>Fluid interface problems </u></b>
+                        </p>
+                        <ul style="font-size:25px">
+                          <li> Implement arbitrary interfaces (skull) </li>
+                          <li> Implement moving/vibrating interfaces (liposomes application)  </li>
+                          <li> Make connection to biological effects </li>
+                        </ul>
+                      </div>
+                      <div style="float:right;width:48%;">
+                        <p style="font-size:30px">
+                          <br>
+                          <b> <u> Final Comments </u></b>
+                        </p>
+                        <ul style="font-size:25px">
+                          <li> FCS application paper <em> almost </em> submitted  </li> <br>
+                          <li> TBI paper in collaboration with VA Hospital scientists almost done </li> <br>
+                          <li> <b>Unifying</b> applications for both areas? </li>
+                              <em>
+                              - Liposomes diffusion affected by shock waves (experiment in progress) <br>
+                              - Chemical processes involved in TBI? </em>
+                        </ul>
+                      </div>
+
+                      <div style="clear: both;"></div>
+				</section>
+
+
+			</div>
+
+		</div>
+
+		<script src="../lib/js/head.min.js"></script>
+		<script src="../js/reveal.min.js"></script>
+
+		<script>
+
+			Reveal.initialize({
+				history: true,
+				transition: 'linear',
+
+				math: {
+					// mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+					config: 'TeX-AMS_HTML-full'
+				},
+
+				dependencies: [
+					{ src: '../lib/js/classList.js' },
+					{ src: '../plugin/math/math.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

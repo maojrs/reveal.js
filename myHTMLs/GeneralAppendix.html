@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - Math Plugin</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="../css/reveal.min.css">
+		<link rel="stylesheet" href="../css/theme/simple.css" id="theme">
+<!-- 		simple night beige default serif sky -->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+			
+			<section>
+              <section>
+              <p style="font-size:20pt">
+                  Appendix
+              </p>
+              <p style="font-size:30pt">
+                Timeline
+               </p>
+              </section>
+              
+              <section>
+              <hr align="left" width="900" size="5" noshade="noshade">
+              <h3 align='left'> PhD Timeline </h3>
+              <hr align="left" width="900" size="5" noshade="noshade">
+              <div class="fragment grow">
+                <img src="figsPG/Timeline.png" alt="Timeline">
+              </div>
+			</section>
+			</section>
+			
+			<section>
+			<section>
+			<p style="font-size:20pt">
+                Appendix
+            </p>
+			<p style="font-size:30pt">
+			    Deterministic vs. Stochastic
+            </p>
+			</section>
+			<section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Deterministic vs. Stochastic reactions. </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <p> Relation diagram between the LMA, CME and FPE: </p>
+                        <img src="figsPG/CMELMAFPE.png" alt="CME Diagram">
+                      <p> - The CME is more fundamental. <br>
+                          - Accounts for discrete probabilistic nature of chemical reactions <br>
+                      </p>
+            </section>
+            </section>
+
+
+
+<!--                     Collins and kimball and Kramers models -->
+              <section>
+            <section>
+            <p style="font-size:20pt">
+                Appendix
+            </p>
+            <p style="font-size:30pt">
+                Diffusion Limited Reactions
+            </p>
+            </section>
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: existing models w/diffusion </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Diffusion Limited Reactions </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                    <!--                       Left column -->
+                      <div style="float:left;width:60%;">
+                        <u> <b> Collins and Kimball's model </u> </b> <br> 
+                        <p style="font-size:30px"> 
+                          Partially diffusion controlled BC: <br> 
+                          Flux $\propto$ Concetration <br> </br>
+                          $$ 4\pi R^2 D u'(R) = \kappa u(r) \\
+                          k_{CK} = \frac{k_S \kappa}{k_S + \kappa} $$
+                        </p> 
+                        <u> <b> Kramer's model </u> </b> <br> 
+                        <p style="font-size:30px"> 
+                          PDF of particles under a potential $U(r)$ follows <br> <br>
+                          $$ \frac{\partial u(r,t)}{\partial t} = 
+                          \frac{D}{r^2}\frac{\partial}{\partial r}
+                          \left(r^2 e^{-\beta U(r)}\frac{\partial [e^{\beta U(r)}u(r,t)]}{\partial r}\right)$$
+                        </p>
+                        
+      
+                        
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:38%;" class="fragment grow" data-fragment-index="2">
+                            <img src="figsPG/partialdifflimited.gif" width="350" >
+                            <p style="font-size:25px" align='right' > 
+                            Smoluchowski &#8594 Blue <br> 
+                            Collins & Kimball &#8594 Red
+                            </p>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                    </section>
+                    
+<!--                     First passage time equivalent problem -->
+                    <section>
+                      <h6 align="left"> Stochastic reaction diffusion: existing models w/diffusion </h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> First Passage Time (FPT) </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <p style="font-size:30px" align='left'> 
+                        - Given uniformly distributed B's around A: <br>
+                        - What is the expected time for first encounter with A: &nbsp $t_1$
+                      </p>
+                      
+                      <!--                       Left column -->
+                      <div style="float:left;width:46%;">
+                      <img src="figsPG/FPTanim.gif" width="350" >
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:46%;">
+                        <p style="font-size:25px" align='left'>
+                         <u><b>Solve:</b></u>
+                         $$\frac{1}{r^{d-1}} \left(\frac{\partial}{\partial r} r^{d-1}D
+                 \frac{\partial}{\partial r} T_d(r) \right) = -1 $$
+                         <br>
+                        - Can also ask time for second encounter starting on A boundary: &nbsp $t_2$ <br> </br>
+                        <b> <u> Reaction rates related to FPT: </u> </b> <br> </br>
+                        $$ t_1=\frac{1}{k_S c_0} \hspace{10mm} t_2=\frac{1}{k_s c_0} + \frac{1}{\kappa c_0} \\
+                          k_{CK} = \frac{1}{t_2 c_0} = \frac{k_S \kappa}{k_S + \kappa}$$
+                        </p>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                        
+                    </section>
+              </section>
+            
+           <!-- The coupled diffusion model-->
+            <section>
+              <section>
+              <p style="font-size:20pt">
+                  Appendix
+              </p>
+              <p style="font-size:30pt">
+                  Coupled Diffusion Model
+              </p>
+              </section>
+              <section>
+               <hr align="left" width="900" size="5" noshade="noshade">
+              <h3 align='left'> Coupled Reaction Diffusion (many $B$s) </h3>
+              <hr align="left" width="900" size="5" noshade="noshade">
+              <p style="font-size:20px">
+              $f_0([r_l],t)$ is the probability density of $[R_l]=[r_l]$ and none of the $B$'s associated. <br>
+              $f_k([r_l],t)$ for $k=1,2,\cdots,n$ is the proability density of $[R_l]=[r_l]$ with the $k^{th}$ $B$ now associated with $A$ forming a $C$ <br></br><br></br>
+              $$ 
+              \frac{\partial f_0([r_l],t)}{\partial t} = \sum_{j=1}^n\left[
+              D_0\frac{\partial}{\partial r_j}e^{-\beta U_0(r_j}\frac{\partial}{\partial r_j}e^{\beta U_0(r_j} f_0([r_l],t)
+              -\alpha (r_j)f_0([r_l],t) + \lambda(r_j)f_j([r_l],t) 
+              \right] 
+              \\[]
+              \frac{\partial f_k([r_l],t)}{\partial t} = D_1\frac{\partial}{\partial r_k}e^{-\beta U_1(r_j}\frac{\partial}{\partial r_k}e^{\beta U_1(r_k} f_0([r_l],t) - \lambda(r_k)f_k([r_l],t) 
+              + \\
+              \sum_{j=1, j\neq k}^n\left[
+              D_0\frac{\partial}{\partial r_j}e^{-\beta U_0(r_j}\frac{\partial}{\partial r_j}e^{\beta U_0(r_j} f_k([r_l],t)
+              +\alpha (r_k)f_0([r_l],t) 
+              \right]
+              $$
+              </p>
+              </section>
+            </section>
+            
+             <!-- The coupled diffusion model-->
+            <section>
+              <section>
+              <p style="font-size:20pt">
+                  Appendix
+              </p>
+              <p style="font-size:30pt">
+                  Fluorescence Correlation Spectroscopy
+              </p>
+              </section>
+              <section>
+                <div class="fragment grow">
+                <img src="figsPG/FCSposter.png" width="1500" >
+                </div>
+              </section>
+              </section>
+              
+              
+               <!-- Numerical Methods -->
+            <section>
+            <section>
+              <p style="font-size:20pt">
+                  Appendix
+              </p>
+              <p style="font-size:30pt">
+                  Numerical Methods (Basic)
+              </p>
+              </section>
+            <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                     <!--  Left column -->
+                      <div style="float:left;width:38%;">
+                        <h4 align='left'> The <u> advection equation with velocity $c$: </u> </h4>
+                        \[ q(x,t)_t + c q(x,t)_x =0 \] <br>
+                        \[ q(x,0) = q_0(x)          \] <br>
+                        <h4 align='left'> Has solution </h4>
+                        $$q(x,t) = q_0(x-ct)$$ <br>
+                        <div class="fragment">
+                          <b> How to solve it numerically? </b>
+                        </div>
+                      </div>
+                      
+                      <br></br>
+                      <img  src="figsNARC/advection.png" width="500"> <br></br>
+
+
+
+                    </section>
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+<!--                       Left column -->
+                      <div style="float:left;width:38%;">
+                      <h4 align='left'> Godunov's finite volume method </h4>
+                        The REA algorithm 
+                        <br></br>
+                        <ul style="font-size:30px">
+                            <li> Reconstruct piecewise polynomial function <br> </br> </li>
+                            <li> Evolve hyperbolic equation. <br> </br> </li>
+                            <li> Average function over grid cell. <br> </br> </li>
+                        </ul>
+                      </div>
+
+<!--                       Right column -->
+                      <br></br>
+                      <img  src="figsNARC/REAanim.gif" alt="Shocktube" width="400">
+
+                      <div style="clear: both;"></div>
+                      
+                      <div class="fragment">
+                        <b> Conserves the integral of $\int q(x,t)dx$ over time!</b>  
+                      </div>
+                    </section>
+                    
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align='left'> System of hyperbolic equations? </h4>
+                      <p align='left'> Like acoustics </p>
+                      <p style="font-size:30px">
+                      \[ \begin{aligned}
+                          \frac{\partial}{\partial t}
+                            \left[\begin{array}{c} p \\   u  \end{array} \right] 
+                        +   \underbrace{\left[\begin{array}{c c} 0 &  K_0 \\ 1/\rho_0 & 0  \end{array} \right]}_{A} 
+                            \frac{\partial}{\partial x} 
+                            \left[\begin{array}{c} p \\   u \end{array} \right]
+                        =  0 
+                        \end{aligned}
+                      \]
+                      </p>
+                      <p align='left'>
+                        As $A = R \Lambda R^{-1}$ with $\Lambda$ diagonal, we can rewrite
+                      </p>
+                      <p style="font-size:30px">
+                        \[\begin{aligned}
+                           \frac{\partial}{\partial t}\vec{w} + 
+                           \underbrace{\left[\begin{array}{c c} \lambda_1 &  0 \\ 0 & \lambda_2  \end{array} \right]}_{\Lambda}
+                           \frac{\partial}{\partial x} \vec{w} = 0 
+                           \hspace{10mm} \mathrm{with} \hspace{10mm} 
+                           \vec{w} = R^{-1}\left[\begin{array}{c} p \\   u  \end{array} \right]
+                           \end{aligned} \]
+                      </p>
+                      <div class="fragment">
+                        <b> Uncoupled advection equations with velocities $\lambda_1$ and $\lambda_2$!<br>
+                            We can solve with the same algorithm. </b>
+                      </div>
+                    </section>
+                    
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <p align="left" font-size:30px>
+                        Wave formulation: think averaging as updating cell averages with waves coming from the cell edges.
+                      </p>
+                      <p style="font-size:27px">
+                        $$ Q_{i}^{n+1} = Q_i^n - \frac{\Delta t}{\Delta x} \times
+                        \underbrace{\left[\sum_{p=1}^m(\lambda^p)^+ W_{i-1/2}^p \right. }_{\mathrm{Left Edge}} +  
+                              \underbrace{\left. \sum_{p=1}^m(\lambda^p)^- W_{i+1/2}^p\right]}_{\mathrm{Right Edge}}
+                        $$ 
+                      </p>
+                       <div style="float:left;width:46%;">
+                      <img  src="figsNARC/waveform.png" alt="RiemannP" width="400"> <br></br>
+                      </div>
+                      <br>
+                      <p align='left' font-size:25px>
+                      On each cell interface, $i-\frac{1}{2}$ and $i+\frac{1}{2}$, we need <br>
+                      <ul>
+                        <li> How fast the wave is moving ($\lambda$'s)</li>
+                        <li> How much of it is moving ($W$'s)</li>
+                        <li class = "fragment"> <b>How we do it? </b></li>
+                      </ul>
+                      </p>
+
+                    </section>
+                     
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                       <!--                       Left column -->
+                      <div style="float:left;width:50%;">
+                        <p align='left' font-size:30px> <b>The Riemman problem </b> </p>
+                        <br>
+                        <ul style="font-size:27px">
+                            <li> Conservation laws (hyperbolic PDEs)</li>
+                            <li> Constant data with a single discontinuity </li> 
+                            <hr align="left" width="400" size="5" noshade="noshade"> <br>
+                            <li> Solve a Riemann problem in each grid edge </li>
+                            <li> Outputs $\lambda's$ and $W's$</li>
+                            <li> Works exactly even for some nonlinear systems like Euler.
+                            <li> There are also approximations. </li>
+                            <li> Has complicated structure like Rarefactions, CD and shocks</li>
+                        </ul>
+                      </div>
+                      
+                      <!--                       Right column -->
+                      <div style="float:right;width:40%;">
+                        <img  src="figsNARC/RiemannAnim.gif" width="450"> 
+                        <small> Acoustics Riemann problem  </small>
+                        <img  src="figsPG/RiemannP.png" width="450"> 
+                        <small> Riemann diagram for Euler eqs. </small>
+                      </div>
+                      
+                      <div style="clear: both;"></div>
+                    </section>
+            </section>
+               
+            <section>
+              <section>
+              <p style="font-size:20pt">
+                  Appendix
+              </p>
+              <p style="font-size:30pt">
+                  Numerical Methods
+              </p>
+              </section>
+              <section>
+              <hr align="left" width="900" size="5" noshade="noshade">
+              <h3 align='left'> HLLC solver </h3>
+              <hr align="left" width="900" size="5" noshade="noshade">
+              <p align="left" style="font-size:25px">
+              <b>The HLLC solver </b><br> </br>
+              $$
+                  \tilde{\textbf{U}}(x,t) = \left\{ 
+                  \begin{array}{l l}
+                  \textbf{U}_L  \  \text{if $\frac{x}{t} \le S_L$}\\
+                  \textbf{U}_{*L}  \  \text{if $S_L \le \frac{x}{t} \le S_*$},\\
+                  \textbf{U}_{*R}  \  \text{if $S_* \le \frac{x}{t} \le S_R$},\\
+                  \textbf{U}_R  \  \text{if $\frac{x}{t}\ge S_R$},
+                  \end{array} \right.
+              $$
+              <b>Average states: </b><br></br>
+              $$
+              \textbf{U}_{*K} = \frac{S_K \textbf{U}_K - \textbf{F}_K + p_* \textbf{D}}{S_L - S_*} \\
+              \mathrm{with:} \hspace{5mm} S_* = \frac{p_R - p_L + \rho_L u_L (S_L - u_L) -\rho_R u_R(S_R - u_R)}{\rho_L(S_L - u_L) - \rho_R(S_R - u_R)}
+              $$
+              <b>And approximate speeds</b><br></br>
+              $$
+              S_L = \text{min}\{u_L - c_L,u_R - c_R\} \ \ \ \ \ S_R = \text{max}\{u_L + c_L, u_R + c_R\}
+              $$
+              </p>
+              </section>
+              
+              <section>
+                <hr align="left" width="900" size="5" noshade="noshade">
+                <h3 align='left'> TR-BDF2 for source terms </h3>
+                <hr align="left" width="900" size="5" noshade="noshade">
+                <p align="left" style="font-size:25px">
+                <b>TR-BDF2</b> for $\frac{d U}{dt} = f(U,t)$: <br>
+                </p>
+                <p style="font-size:25px">
+                $$ 
+                U^*=U^n + \frac{\Delta t}{4}\left[f(U^n) + f(U^*)\right] \\
+                U^{n+1} = \frac{1}{3}\left[4U^* - U^n + \Delta t f(U^{n+1})\right].
+                $$
+                <p align="left" style="font-size:25px">
+                  <b>For Euler eqs: </b>
+                </p>
+                <div style="float:left;width:48%;font-size:17px">
+                $$
+                \rho^*=\rho^n\frac{1 - \frac{k}{4r}u_r^n}{1 + \frac{k}{4r}u_r^n} \\
+                \rho^* u_r^* = \rho^* u_r^n \\
+                \rho^* u_z^* =\rho^n u_z^* \frac{1 - \frac{k}{4r}u_r^n}{1 + \frac{k}{4r}u_r^n} \\
+                E^* = \frac{E^n - \frac{k}{4r}\left[u_r^n(E^n + P^n) - u_r^*(\gamma - 1)\frac{\rho^*}{2}(u_r^{*^{2}} + u_z^{*^{2}})
+                \right]}{1 + \frac{k}{4r}u_r^n\gamma}
+                $$
+                </div>
+                <div style="float:right;width:48%;font-size:17px">
+                $$
+                \rho^{n+1} = \frac{1}{3}\frac{4\rho^* - \rho^n}{1 + \frac{k}{3r}u_r^n} \\
+                u_r^{n+1}\rho^{n+1} = \rho^{n+1} u_r^n \\
+                \rho^{n+1} u_z^{n+1} = \frac{1}{3} \frac{4\rho^* u_z^* - \rho^n u_z^n}{1 + \frac{k}{3r}u_r^n} \\
+                E^{n+1} = \frac{1}{3} \frac{4E^* - E^n - \frac{k}{r} u_r^n ((1-\gamma)\frac{\rho^{n+1}}{2}(u_r^{{n+1}^2} + u_z^{{n+1}^2}) -\gamma P_\infty)}{1 + \frac{k}{3r}\gamma u_r^{n+1}}
+                $$
+                </div>
+                </p>
+              </section>
+            </section>
+              
+  
+              <!--Final Comments-->
+            <section>
+              <section>
+                <p style="font-size:20pt">
+                    Appendix
+                </p>
+                <p style="font-size:30pt">
+                    Final Comments
+                </p>
+                </section>
+              <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Final Comments </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <div class="fragment shrink" data-fragment-index="2">
+                      <div class="fragment grow" data-fragment-index="1">
+                      <p style="font-size:30px">
+                        <b> <u> What we have done: </u> </b> </p>
+                        <div style="float:left;width:48%;">
+                        <ul style="font-size:25px">
+                          <li> Implemented KMC code for reversible SRD </li>
+                          <li> Applied it to FCS </li>
+                          <li> Created the CD and derived classic results from limiting cases </li> <br>
+                        </ul>
+                        </div>
+                        <div style="float:right;width:48%;">
+                        <ul style="font-size:25px">
+                          <li> Modeled multi-interface experimental setup with Euler eqs. and SGEOS </li>
+                          <li> Showed importance of geometry and interfaces in mTBI
+                          <li> Suggested cavitation as a damage mechanism in mTBI </li>
+                        </ul>
+                      </div>
+                      </div>
+                      </div>
+                      <div style="clear: both;"></div>
+                      <div class="fragment" data-fragment-index="2">
+                      <div class="fragment grow" data-fragment-index="2">
+                        <p style="font-size:30px">
+                        <b> <u> What we will do: </u> </b>
+                        </p>
+                        <div style="float:left;width:48%;">
+                        <ul style="font-size:25px">
+                          <li> Study bistability with CD model </li>
+                          <li> Generalization of CD to many A's </li>
+                          <li> Derive known methods as limits of CD </li>
+                          <li> Design/implement algorithm to solve CD </li> <br>
+                        </ul>
+                        </div>
+                        <div style="float:right;width:48%;">
+                        <ul style="font-size:25px">
+                          <li> Add arbitrary interfaces w/mapped grids </li>
+                          <li> Implement a two-phase model </li>
+                          <li> Implement moving/vibrating interfaces  </li>
+                          <li> Keep collaborating with VA </li>
+                        </ul>
+                      </div>
+                      </div>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                </section>
+              
+              <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Final Comments </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                        <ul style="font-size:25px">
+                          <li> FCS application paper <em> almost </em> submitted  </li> <br>
+                          <li> TBI paper in collaboration with VA Hospital scientists almost finished </li> <br>
+                          <li> Other <b>unifying</b> applications for both areas? </li>
+                              <em>
+                              - Liposomes diffusion affected by shock waves (experiment in progress) <br>
+                              - Biochemical processes involved in TBI? </em>
+                        </ul>
+                </section>
+              </section>
+              
+                              <!--Key References-->
+          <section>
+              <section>
+                <p style="font-size:20pt">
+                    Appendix
+                </p>
+                <p style="font-size:30pt">
+                  Key References
+                </p>
+              </section>
+              
+              <section>
+                <ul style="font-size:17px">
+                <li>Kimball, G. E., & Collins, F. C. (1949). Diffusion-Controlled Reactions in Liquid Solutions. Industrial an engineering chemistry, (November), 2551–2553. </li>
+                <li>Shoup, D., & Szabo, a. (1982). Role of diffusion in ligand binding to macromolecules and cell-bound receptors. Biophysical journal, 40(1), 33–9. doi:10.1016/S0006-3495(82)84455-X</li>
+                <li>Andrews, S. S., & Bray, D. (2004). Stochastic simulation of chemical reactions with spatial resolution and single molecule detail. Physical biology, 1(3-4), 137–51. doi:10.1088/1478-3967/1/3/001</li>
+                <li>Elson, E. L., & Magde, D. (1974). Fluorescene Correlation Spectroscopy. I. Conceptual Basis and Theory. Biopolymers, (13), 1–27.</li>
+                <li>Beard D. A. and Qian H. (2008), Chemical Biophysics: Quantitative Analysis of Cellular Systems, Cambridge</li>
+                <li>Fagnan, K. M. (2010). High-resolution Finite Volume Methods for Extracorporeal Shock Wave Therapy, M.</li>
+                <li>LeVeque, R. (2002), Finite Volume Methods for Hyperbolic Problems, Cambridge.</li>
+                <li>R. J. LeVeque, M. J. Berger, et. al. (2014), Clawpack Software 5.0</li>
+                <li>Toro E. F. (2008), Riemann Solvers and Numerical Methods for FLuid Dynamics, Springer</li>
+                <li>Peskind, E. R., Petrie, E. C., Cross, D. J., Pagulayan, K., McCraw, K., Hoff, D., Hart, K., et al. (2011). Cerebrocerebellar hypometabolism associated with repetitive blast exposure mild traumatic brain injury in 12 Iraq war Veterans with persistent post-concussive symptoms. NeuroImage, 54 Suppl 1, S76–82. doi:10.1016/j.neuroimage.2010.04.008</li>
+                <li>Ivings, M. J., Causon, D. M., & Toro, E. F. (1998). ON RIEMANN SOLVERS FOR COMPRESSIBLE LIQUIDS, 418(June 1997), 395–418.</li>
+                </ul>
+              </section>
+          </section>
+        
+
+			</div>
+
+		</div>
+
+		<script src="../lib/js/head.min.js"></script>
+		<script src="../js/reveal.min.js"></script>
+
+		<script>
+
+			Reveal.initialize({
+				history: true,
+				transition: 'linear',
+
+				math: {
+					// mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+					config: 'TeX-AMS_HTML-full'
+				},
+
+				dependencies: [
+					{ src: '../lib/js/classList.js' },
+					{ src: '../plugin/math/math.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - Math Plugin</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="../css/reveal.min.css">
+		<link rel="stylesheet" href="../css/theme/serif.css" id="theme">
+<!-- 		simple night beige default serif sky -->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                <!--TITLE -->
+				<section>
+                    <hr align="left" width="900" size="5" noshade="noshade">
+					<h3> Shock wave propagation through interfaces applied to Traumatic Brain Injury. 
+					<hr align="left" width="900" size="5" noshade="noshade"> </h3>
+					<p> 
+					<small> Mauricio Del Razo Sarmina, <br>
+					Randall J. LeVeque, <br>  
+                    & <br>
+					Collaborators at VA Hospital </small>
+					</p>
+					<img  src="figsNARC/UW_SW_Campus_Masthead.jpg"alt="Shocktube" width="400">
+					<p align='center'>
+                    <small>
+                    <b> University of Washington </b> <br> Department of Applied Mathematics
+                    </small>
+                    </p>
+				</section>
+				
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+				<!--INTRODUCTION -->
+                <section>
+                    <h2 align="left"> Outline  </h2>
+                    <hr align="left" width="900" size="5" noshade="noshade"> <br>
+                    
+<!--                     LEFT COLUMN -->
+                    <div style="float:left;width:46%;font-size:30px;">
+                       <div class="fragment grow" data-fragment-index="1">
+                            <div class="fragment shrink" data-fragment-index="2">
+                            <u> <b> Traumatic Brain Injury </b> </u> <br><br/>
+                            </div>
+                       </div>
+                       <div class="fragment" data-fragment-index="1" align='center'>
+                        <div class="fragment shrink" data-fragment-index="2">
+                          <ul>
+                            <li> Motivation</li>
+                            <li> Experiments at VA Hospital <br>
+                                 - Experimental setup </li>
+                            <li> How to model it? <br>
+                                 - Numerical setup </li>
+                            <div class="fragment grow" data-fragment-index="2">
+                            <div class="fragment highlight-red" data-fragment-index="2">
+                            <li> Numerical Methods <br>
+                                 - Finite Volume methods </li>
+                            </div> 
+                            </div>
+                            <li> Results </li>
+                          </ul>
+                        </div>
+                       </div>
+                    </div>
+                          
+<!--                       Right Column     -->
+                      <div style="float:right;width:50%;font-size:30px;">
+                        <div class="fragment" data-fragment-index="2">
+                        <div class="fragment grow" data-fragment-index="2">
+                          <u> <b> Finite Volume Methods (detour)</b> </u> <br> </br>
+                        </div>  
+                        </div>
+                      
+                        <div class="fragment" data-fragment-index="2">
+                            <ul>
+                              <li> Advection equation </li>
+                              <li> Godunov scheme and REA algorithm </li>
+                              <li> System of equations?
+                              <li> The wave propagation form </li>
+                              <li> The Riemann problem </li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                    
+                </section>
+                
+
+                
+<!--                     Motivation -->
+                  <section>
+                      <section>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h2 align='left'> Motivation </h2>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h4 align="left"> Collaborators at VA Hospital study mTBI in war veterans: <br></br> </h4>
+                          <ul>
+                            <li> Repetitive exposure to "mild" blast waves <br> </br> </li>
+                            <li> No brain damage diagnosed by standard methods  <br> </br> </li>
+                            <li> Significant dementing and neurodegenerative disorders emerge </li> <br> 
+                          </ul>
+                        <p style="font-size:30px" align='left'>  
+                          Repetitive exposure to shocks in the head set in motion pathogenic processes that later emerge
+                          as neurodegenerative disorders YEARS LATER! <br></br>
+                        </p>
+                        <div class="fragment" align="center" style="font-size:50px">
+                          <b> Why do mathematicans care? </b> 
+                        </div>
+                    </section>
+                    <section>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h2 align='left'> Motivation </h2>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <p style="font-size:35px" align='left'>  
+                        <b> We can help with computational experiments! </b> <br>
+                        </p>
+                        <p style="font-size:30px" align='left'>
+                          &nbsp &nbspComputational model of shock waves propagating through interfaces <br>
+                            &nbsp &nbsp &nbsp &nbsp - Air to skull and brain. <br>
+                            &nbsp &nbsp &nbsp &nbsp - Interfaces in experimental setup <br> </br>
+                        </p>
+                        
+                        <p style="font-size:35px" align='left'>
+                        <b> Bring insight into possible damaging mechanisms! </b> <br> 
+                        </p>
+                        
+                        <p style="font-size:35px" align='left'>
+                        <b>Mild traumatuc brain injury (mTBI) is also relevant in <br> </b> </p>
+                          <ul>
+                            <li> Blast waves (civilians) <br> </li>
+                            <li> Car/bike accidents <br> </li>
+                            <li> Football players <br> </li>
+                            <li> Boxing </li> <br> 
+                          </ul>
+                    </section>
+                  </section>
+<!--                 Experimental setup     -->
+				<section>
+<!-- 				    Experimentalists hypothesis -->
+					<section>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h3 align='left'> Experimentalists at VA Hospital: </h3>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+					    <h5 align="left"> What happens when the shockwave hits? <br></br> </h5>
+					    <ul>
+					        <li> Changes in blood-brain barrier diffusion. <br> </li>
+                            <li> Damage to astrocytes cells. <br></li>
+					        <li> Brain cells damage. <br> </li>
+					        <li> Combination of these. <br></br> </li>
+					    </ul>
+					    <ol class="fragment">
+					    <p> We are trying to find out...</p>
+					    <p align="left" style="font-size:30px">  Experimental setup done with endothelial cells, 
+					    since the blood-brain barrier is composed by them. </p>
+					    </ol>
+					</section>
+					
+<!-- 					Experimental setup -->
+					<section>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h3 align='left'> Experimental setup </h3>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h6 align="left"> They have a shock-tube! </h6>
+                        <div class="fragment grow" data-fragment-index="1">
+                              <img  src="figsNARC/Shocktube-photo.jpg" alt="Shocktube" width="600">
+                        </div>
+                        <h6 align="left"> Sample with enothelial cells is introduced into the shock-tube. </h6>
+
+					</section>
+					
+					<section>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h3 align='left'> Experimental setup </h3>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h6 align="left"> Cartoon of cylindrical cross-section of shock tube: </h6>
+                        <div class="fragment grow" data-fragment-index="1">
+                            <div class="fragment shrink" data-fragment-index="2">
+                              <img  src="figsPG/TBIshocktube.png" alt="Shocktube" width="500">
+                            </div>
+                        </div>
+                        <ul style="font-size:30px">
+                            <li> We can measure shock profile in air, 
+                                 but how does it look before hitting the cells? </li>
+                            <li> Reflections important? </li>
+                            <li> Other effects? Maybe cavitation? </li> 
+                        </ul>
+                        <div class="fragment" style="font-size:40px">
+                        <b> Can we model this setup?</b>
+                        </div>
+                        
+                    </section>
+				</section>
+
+<!--                 Numerical setup -->
+				<section>
+				    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> How to model it? </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align="left"> We need</h4>
+                      <ul>
+                          <li> Acoustic pressure propagation </li>
+                          <li> Shock formation (non-linear) </li>
+                          <li> Heat; it could be relevant for cell damage </li> 
+                          <li> Interfaces </li> <br>
+                      </ul>
+                      <h4 align="left"> 3D Axisymmetric Compressible euler equations</h4>
+                      <p style="font-size:30px">
+                      \[ \begin{aligned}
+                          \frac{\partial}{\partial t}
+                            \left[\begin{array}{c} \rho \\   \rho u_r \\    \rho u_z \\    E   \end{array} \right] 
+                        + \frac{\partial}{\partial r} 
+                            \left[\begin{array}{c} \rho u_r \\   \rho u_r^2 + p \\    \rho u_r u_z \\     u_r(E+p)   \end{array} \right]
+                        + \frac{\partial}{\partial z}
+                            \left[\begin{array}{c} \rho u_z \\   \rho u_r u_z \\    \rho u_z^2 + p \\     u_z(E+p)   \end{array} \right] 
+                        =   \left[\begin{array}{c} -(\rho u_r)/r \\   -(\rho u_r^2)/r  \\    -(\rho u_r u_z)/r \\     -u_r(E+p)/r   \end{array} \right] 
+                        \end{aligned}
+                      \]
+                      </p>
+
+                    </section>
+                    
+<!--                     Where are the interfaces -->
+                    <section>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <h3 align='left'> Where are the Interfaces? </h3>
+                        <hr align="left" width="900" size="5" noshade="noshade">
+                        <p align="left" style="font-size:30px"> The Equation of State (EOS) relates pressure 
+                        with density and internal energy to close the system of eqs. <br> </br></p>
+                        <p style="font-size:30px"> Stiffened gas equation of state (SGEOS) or Tamman EOS: <br> </p>
+                        \[
+                          p = \underbrace{(\gamma - 1) \rho e }_{\text{Ideal gas}} -\underbrace{\gamma P_{\infty}}_{\text{Stiffening term}}
+                          \]
+                       <p style="font-size:30px" > Different materials = different parameters for SGEOS</p>
+                       <div align='center'>
+                        <table border="1" style="font-size:25px;border:solid 3px #000;">
+                          <tr>
+                          <td style="border:3px solid #000;"> Parameter </td>
+                          <td style="border:3px solid #000;"> $\gamma$ &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp </td>
+                          <td style="border:3px solid #000;"> $P_\infty$ </td>
+                          </tr>
+                          <tr>
+                          <td style="border:3px solid #000;"> Air </td>
+                          <td style="border:3px solid #000;"> 1.4 </td>
+                          <td style="border:3px solid #000;"> 0.0 </td>
+                          </tr>
+                          <tr>
+                          <td style="border:3px solid #000;"> Water</td>
+                          <td style="border:3px solid #000;"> 7.15 </td>
+                          <td style="border:3px solid #000;"> $3\times 10^8$ </td>
+                          </tr>
+                        </table>
+                        <p style="font-size:25px" > Problem can be stiff at interfaces! <br>
+                        $\Rightarrow$ Interfaces not trivial to implement. </p>
+                       <div>
+                    </section>
+                    
+<!--                     Numerical setup -->
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> The Numerical Setup </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                      <img  src="figsPG/2Drevolve.png" alt="Shocktube" width="500">
+                      <ul style="font-size:25px">
+                        <li> Revolved 2D model w/source terms = 3D Axisymmetric model. </li>
+                        <li> Air modeled in Eulerian coordinates. </li>
+                        <li> Water modeled in Lagrangian coordinates (moving w/fluid). </li>
+                        <li> Displacement of material in water small &#8594 Fixed grid</li>
+                      </ul>
+
+                    </section>
+				</section>
+				
+<!-- 				Numerical methods -->
+				<section>
+				    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                     <!--  Left column -->
+                      <div style="float:left;width:38%;">
+                        <h4 align='left'> The <u> advection equation with velocity $c$: </u> </h4>
+                        \[ q(x,t)_t + c q(x,t)_x =0 \] <br>
+                        \[ q(x,0) = q_0(x)          \] <br>
+                        <h4 align='left'> Has solution </h4>
+                        $$q(x,t) = q_0(x-ct)$$ <br>
+                        <div class="fragment">
+                          <b> How to solve it numerically? </b>
+                        </div>
+                      </div>
+                      
+                      <br></br>
+                      <img  src="figsNARC/advection.png" width="500"> <br></br>
+
+
+
+                    </section>
+				    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+<!--                       Left column -->
+                      <div style="float:left;width:38%;">
+                      <h4 align='left'> Godunov's finite volume method </h4>
+                        The REA algorithm 
+                        <br></br>
+                        <ul style="font-size:30px">
+                            <li> Reconstruct piecewise polynomial function <br> </br> </li>
+                            <li> Evolve hyperbolic equation. <br> </br> </li>
+                            <li> Average function over grid cell. <br> </br> </li>
+                        </ul>
+                      </div>
+
+<!--                       Right column -->
+                      <br></br>
+                      <img  src="figsNARC/REAanim.gif" alt="Shocktube" width="400">
+
+                      <div style="clear: both;"></div>
+                      
+                      <div class="fragment">
+                        <b> Conserves the integral of $\int q(x,t)dx$ over time!</b>  
+                      </div>
+                    </section>
+                    
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align='left'> System of hyperbolic equations? </h4>
+                      <p align='left'> Like acoustics </p>
+                      <p style="font-size:30px">
+                      \[ \begin{aligned}
+                          \frac{\partial}{\partial t}
+                            \left[\begin{array}{c} p \\   u  \end{array} \right] 
+                        +   \underbrace{\left[\begin{array}{c c} 0 &  K_0 \\ 1/\rho_0 & 0  \end{array} \right]}_{A} 
+                            \frac{\partial}{\partial x} 
+                            \left[\begin{array}{c} p \\   u \end{array} \right]
+                        =  0 
+                        \end{aligned}
+                      \]
+                      </p>
+                      <p align='left'>
+                        As $A = R \Lambda R^{-1}$ with $\Lambda$ diagonal, we can rewrite
+                      </p>
+                      <p style="font-size:30px">
+                        \[\begin{aligned}
+                           \frac{\partial}{\partial t}\vec{w} + 
+                           \underbrace{\left[\begin{array}{c c} \lambda_1 &  0 \\ 0 & \lambda_2  \end{array} \right]}_{\Lambda}
+                           \frac{\partial}{\partial x} \vec{w} = 0 
+                           \hspace{10mm} \mathrm{with} \hspace{10mm} 
+                           \vec{w} = R^{-1}\left[\begin{array}{c} p \\   u  \end{array} \right]
+                           \end{aligned} \]
+                      </p>
+                      <div class="fragment">
+                        <b> Uncoupled advection equations with velocities $\lambda_1$ and $\lambda_2$!<br>
+                            We can solve with the same algorithm. </b>
+                      </div>
+                    </section>
+                    
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <p align="left" font-size:30px>
+                        Wave formulation: think averaging as updating cell averages with waves coming from the cell edges.
+                      </p>
+                      <p style="font-size:27px">
+                        $$ Q_{i}^{n+1} = Q_i^n - \frac{\Delta t}{\Delta x} \times
+                        \underbrace{\left[\sum_{p=1}^m(\lambda^p)^+ W_{i-1/2}^p \right. }_{\mathrm{Left Edge}} +  
+                              \underbrace{\left. \sum_{p=1}^m(\lambda^p)^- W_{i+1/2}^p\right]}_{\mathrm{Right Edge}}
+                        $$ 
+                      </p>
+                       <div style="float:left;width:46%;">
+                      <img  src="figsNARC/waveform.png" alt="RiemannP" width="400"> <br></br>
+                      </div>
+                      <br>
+                      <p align='left' font-size:25px>
+                      On each cell interface, $i-\frac{1}{2}$ and $i+\frac{1}{2}$, we need <br>
+                      <ul>
+                        <li> How fast the wave is moving ($\lambda$'s)</li>
+                        <li> How much of it is moving ($W$'s)</li>
+                        <li class = "fragment"> <b>How we do it? </b></li>
+                      </ul>
+                      </p>
+
+                    </section>
+                     
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                       <!--                       Left column -->
+                      <div style="float:left;width:50%;">
+                        <p align='left' font-size:30px> <b>The Riemman problem </b> </p>
+                        <br>
+                        <ul style="font-size:27px">
+                            <li> Conservation laws (hyperbolic PDEs)</li>
+                            <li> Constant data with a single discontinuity </li> 
+                            <hr align="left" width="400" size="5" noshade="noshade"> <br>
+                            <li> Solve a Riemann problem in each grid edge </li>
+                            <li> Outputs $\lambda's$ and $W's$</li>
+                            <li> Works exactly even for some nonlinear systems like Euler.
+                            <li> There are also approximations. </li>
+                            <li> Has complicated structure like Rarefactions, CD and shocks</li>
+                        </ul>
+                      </div>
+                      
+                      <!--                       Right column -->
+                      <div style="float:right;width:40%;">
+                        <img  src="figsNARC/RiemannAnim.gif" width="450"> 
+                        <small> Acoustics Riemann problem  </small>
+                        <img  src="figsPG/RiemannP.png" width="450"> 
+                        <small> Riemann diagram for Euler eqs. </small>
+                      </div>
+                      
+                      <div style="clear: both;"></div>
+                    </section>
+                    
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> Where were we? </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                      <img  src="figsPG/2Drevolve.png" alt="Shocktube" width="500">
+                      <h4 align="left"> 3D Axisymmetric Compressible euler equations</h4>
+                      <p style="font-size:30px">
+                      \[ \begin{aligned}
+                          \frac{\partial}{\partial t}
+                            \left[\begin{array}{c} \rho \\   \rho u_r \\    \rho u_z \\    E   \end{array} \right] 
+                        + \frac{\partial}{\partial r} 
+                            \left[\begin{array}{c} \rho u_r \\   \rho u_r^2 + p \\    \rho u_r u_z \\     u_r(E+p)   \end{array} \right]
+                        + \frac{\partial}{\partial z}
+                            \left[\begin{array}{c} \rho u_z \\   \rho u_r u_z \\    \rho u_z^2 + p \\     u_z(E+p)   \end{array} \right] 
+                        =   \left[\begin{array}{c} -(\rho u_r)/r \\   -(\rho u_r^2)/r  \\    -(\rho u_r u_z)/r \\     -u_r(E+p)/r   \end{array} \right] 
+                        \end{aligned}
+                      \]
+                      </p>
+                    </section>
+                    
+                    <section>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> More numerical methods </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                        <ul style="font-size:30px">
+                              <li> High resolution FVM: </li>
+                                  - Godunov method (+ limiters) <br></br>
+                              <li> Riemann solvers: </li>
+                                  - HLLC approximate solver <br>
+                                  - Exact Riemann solver for Tamman EOS <br></br> 
+                              <li> Two or three Dimensions: </li>
+                                  - Dimensional splitting <br> </br>
+                              <li> Source terms </li>
+                                  - Fractional step method with TR-BDF2 <br></br>
+                              <li> Stiff Interfaces </li>
+                                  - Eulerian/Lagrangian coupling on fixed grid
+                            </ul>
+                    </section>
+
+				</section>
+                
+<!--                 Results -->
+				<section>
+<!-- 				    1D Results -->
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: some results</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> 1D Air-Plastic-Water Interface </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+<!--                       Left column -->
+                      <div style="float:left;width:38%;">
+                        <br></br>
+                        <ul style="font-size:25px">
+                            <li> Pressure amplitude increases when crossing interface. <br> </br> </li>
+                            <li> As Plastic interface gets thinner, it becomes negligible. <br> </br> </li>
+                            <li> Plastic-water could play role of skull-brain. <br> </br> </li>
+                        </ul>
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:60%;">
+                        <iframe id="slideshare" src="figs/PressureAnimation.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                        <script>
+                            document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                        </script>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                    </section>
+                    
+<!--                     Pressure contour results -->
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: some results</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align='left'> 3D Axisymmetric Air-Water Interface Pressure Contours </h4>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <iframe id="slideshare" src="figsPG/3DAsymtranswell_pressurecontour.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                      <script>
+                          document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                      </script>
+                    </section>
+                    
+<!--                     1D vs 3D comparison -->
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: some results</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h4 align='left'> 1D vs 3D Comparison </h4>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                    <!--                       Left column -->
+                      <div style="float:left;width:38%;">
+                      <p style="font-size:30px">One dimensional simulation: <br></br>
+                      </p>
+                      <img  src="figsPG/1Dpressure.gif" alt="Shocktube" width="500">
+                      <br></br>
+                      <p style="font-size:25px"> 
+                      3D Simulation $\Rightarrow$ <br>
+                      Vapour pressure at room Temperature: <br>2 493 Pa 
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:60%;">
+                      <iframe id="slideshare" src="figsPG/3DAsymtranswellpressureslice.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                      <script>
+                          document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                      </script>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                      
+                    </section>
+                    
+                    <section>
+                      <h6 align="left"> Fluid shock wave/interface problems: some results</h6>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      <h3 align='left'> 3D Axisymmetric Air-Water Interface </h3>
+                      <hr align="left" width="900" size="5" noshade="noshade">
+                      
+                      <!--                       Left column -->
+                      <div style="float:left;width:60%;">
+                        <iframe id="slideshare" src="figsPG/3DAsymtranswell.html" width="1100" height="800" style=style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+                        <script>
+                          document.getElementById('slideshare').attributeName = 'allowfullscreen';
+                        </script>
+                      </div>
+
+<!--                       Right column -->
+                      <div style="float:right;width:38%;">
+                        <p style="font-size:30px">
+                            <b> Major insights: </b> <br></br>
+                        </p>
+                        <ul style="font-size:30px">
+                            <li> Thin plastic negligible (1D) </li> <br>
+                            <li> Pressure increases when crossing interface </li> <br>
+                            <li> Geometry and reflections are very relevant </li> <br>
+                            <li> Cavitation possible as new mechanism of injury </li> <br>
+                        <ul>
+                      </div>
+
+                      <div style="clear: both;"></div>
+                    </section>
+				</section>
+				
+
+			</div>
+
+		</div>
+
+		<script src="../lib/js/head.min.js"></script>
+		<script src="../js/reveal.min.js"></script>
+
+		<script>
+
+			Reveal.initialize({
+				history: true,
+				transition: 'linear',
+
+				math: {
+					// mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+					config: 'TeX-AMS_HTML-full'
+				},
+
+				dependencies: [
+					{ src: '../lib/js/classList.js' },
+					{ src: '../plugin/math/math.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
